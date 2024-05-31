@@ -1,0 +1,39 @@
+import { Component, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { PatientService } from './patient.service';
+import { RegistrationComponent } from './registration/registration.component';
+import { LoginComponent } from './login/login.component';
+import { CaseFormComponent } from './case-form/case-form.component';
+import { CaseListComponent } from './case-list/case-list.component';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, RegistrationComponent, LoginComponent, CaseFormComponent, CaseListComponent],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  title = 'patient-app';
+
+  // patients: any[] = [];
+
+  // constructor(private patientService: PatientService) {}
+
+  // ngOnInit(): void {
+  //   this.getPatients();
+  // }
+
+  // getPatients():void {
+  //   this.patientService.getPatients().subscribe(
+  //     (data: any) => {
+  //       this.patients = data;
+  //       console.log(this.patients);
+  //     },
+
+  //     (err: any) => {
+  //       console.log("Error fetching patient data", err);
+  //     }
+  //   );
+  // }
+}
