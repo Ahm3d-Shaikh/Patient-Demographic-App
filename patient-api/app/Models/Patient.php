@@ -10,16 +10,20 @@ class Patient extends Model
     use HasFactory;
 
     protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
-        'Gender',
-        'DOB',
-        'SSN',
-        'Address',
-        'City',
-        'State',
-        'Zip'
+        'firstName',
+        'middleName',
+        'lastName',
+        'email',
+        'gender',
+        'dob',
+        'homePhone',
+        'workPhone',
+        'cellPhone',
+        'address',
+        'city',
+        'state',
+        'zip',
+        'ssn'
     ];
 
     public function appointments(){

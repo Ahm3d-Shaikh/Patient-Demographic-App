@@ -5,18 +5,19 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { CaseFormComponent } from './case-form/case-form.component';
 import { CaseListComponent } from './case-list/case-list.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RegistrationComponent, LoginComponent, CaseFormComponent, CaseListComponent],
+  imports: [RouterOutlet, RegistrationComponent, LoginComponent, CaseFormComponent, CaseListComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'patient-app';
 
-  // patients: any[] = [];
+  patients: any[] = [{name: 'Ahmed', email: 'm.ahm3d.personal@gmail.com'}];
 
   // constructor(private patientService: PatientService) {}
 

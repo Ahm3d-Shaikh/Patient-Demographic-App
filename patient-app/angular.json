@@ -28,7 +28,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "patient-app/node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",

@@ -1,0 +1,8 @@
+{
+  "routes": [
+    "/cases",
+    "/cases/new",
+    "/login",
+    "/register"
+  ]
+}

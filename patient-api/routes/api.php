@@ -7,7 +7,7 @@ use App\Http\Controllers\PatientController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware('auth:api') -> group(function() {
+Route::middleware('cors') -> group(function() {
     Route::get('patients', [PatientController::class, 'index']);
     Route::post('patients', [PatientController::class, 'store']);
     Route::get('patients/{id}', [PatientController::class, 'show']);
