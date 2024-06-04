@@ -1,13 +1,22 @@
-import { Routes } from '@angular/router';
-import { RegistrationComponent } from './registration/registration.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { CaseListComponent } from './case-list/case-list.component';
+import { RegistrationComponent } from './registration/registration.component';
 import { CaseFormComponent } from './case-form/case-form.component';
+import { CaseListComponent } from './case-list/case-list.component';
 
 export const routes: Routes = [
-  { path: '', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-    { path: 'cases/edit/:id', component: CaseFormComponent },
-    { path: 'cases/new', component: CaseFormComponent },
-    { path: 'cases', component: CaseListComponent },
-  ];
+  { path: 'register', component: RegistrationComponent },
+  {path: 'case-form', component: CaseFormComponent},
+  {path: 'case-list', component: CaseListComponent},
+  { path: '', redirectTo: '/register', pathMatch: 'full' }, // Default route
+  { path: '**', redirectTo: '/register' } // Wildcard route for a 404 page or redirect to login
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+
+export class AppRoutingModule { }

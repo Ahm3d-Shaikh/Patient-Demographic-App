@@ -1,8 +1,8 @@
 {
   "routes": [
-    "/",
-    "/cases",
-    "/cases/new",
-    "/login"
+    "/case-form",
+    "/case-list",
+    "/login",
+    "/register"
   ]
 }

@@ -8,8 +8,11 @@
     margin-bottom: 15px;
   }
   
-  .btn-primary {
+  #submit-button {
     background-color: #007bff;
     border-color: #007bff;
   }
   
+#login-button {
+    margin-top: 2px;
+}

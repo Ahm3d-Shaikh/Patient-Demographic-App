@@ -1,0 +1,63 @@
+var express = require('express');
+var router = express.Router();
+const jwt = require('jsonwebtoken');
+const mysql = require('mysql');
+const bcrypt = require('bcrypt');
+
+const SECRET_KEY = process.env.SECRET_KEY;
+
+
+const connection = mysql.createConnection({
+    root: process.env.ROOT,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE
+});
+
+connection.connect(err => {
+    if (err) throw err;
+    console.log("MYSQL connection established");
+});
+
+router.post('/login', (req, res) => {
+    const {email, password} = req.body;
+
+    const query = `SELECT * from Patients WHERE email = ?`;
+    connection.query(query, [email], (err, result) => {
+        if (err) throw err;
+        
+        if(result.length == 0) {
+            return res.status(401).json({message: 'Authentication failed'});
+        };
+
+        const user = result[0];
+
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+
+            if(isMatch) {
+                const token = jwt.sign({id: user.id, email: user.email}, SECRET_KEY, {expiresIn: '2h'});
+                res.json({token});
+            }
+
+            else{
+                res.status(401).json({message: 'Authentication failed'});
+            }
+        });
+    });
+});
+
+router.post('/refresh-token', (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).send('Unauthorized');
+  
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+      if (err) return res.status(401).send('Unauthorized');
+  
+      const newToken = jwt.sign({ id: decoded.id }, SECRET_KEY, { expiresIn: '2h' });
+      res.json({ token: newToken });
+    });
+  });
+
+
+module.exports = router;

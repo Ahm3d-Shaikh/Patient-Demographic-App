@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { EmailValidator, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from 'express';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
       const {email, password} = this.loginForm.value;
 
       console.log('Login attempt with email: ', email, 'and password: ', password);
-      //this.router.navigate(['/case-form']);
+      this.router.navigate(['/case-form']);
     }
   }
 
