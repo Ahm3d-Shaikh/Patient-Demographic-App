@@ -5,9 +5,9 @@ import { CaseListComponent } from './case-list/case-list.component';
 import { CaseFormComponent } from './case-form/case-form.component';
 
 export const routes: Routes = [
-    {path: 'register', component: RegistrationComponent},
-    {path: 'login', component: LoginComponent},
-    {path: 'cases', component: CaseListComponent},
-    {path: 'cases/new', component: CaseFormComponent},
-    {path: 'cases/edit/:id', component: CaseFormComponent}
-];
+  { path: '', component: RegistrationComponent },
+  { path: 'login', component: LoginComponent },
+    { path: 'cases/edit/:id', component: CaseFormComponent },
+    { path: 'cases/new', component: CaseFormComponent },
+    { path: 'cases', component: CaseListComponent },
+  ];

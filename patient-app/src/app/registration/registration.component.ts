@@ -37,10 +37,7 @@ export class RegistrationComponent implements OnInit {
 
   onSubmit(event: Event): void {
     event.preventDefault();
-    console.log("OnSubmit m agaya hai");
-    console.log("Valid h ya nh: ", this.registrationForm.valid);
     if (this.registrationForm.valid) {
-      console.log("if condition k andar");
       this.http.post('/api/v1/patients/', this.registrationForm.value).subscribe({
         next: (response) => {
           console.log("Patient Saved Successfully ", response);
@@ -55,5 +52,5 @@ export class RegistrationComponent implements OnInit {
     else{
       console.log("Form is invalid");
     }
-  }
+  };
 }

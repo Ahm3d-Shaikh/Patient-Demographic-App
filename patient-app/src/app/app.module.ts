@@ -11,12 +11,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes} from "@angular/router";
 import { RegistrationComponent } from "./registration/registration.component";
 import { LoginComponent } from "./login/login.component";
+import { routes } from './app.routes';
 
-const routes: Routes = [
-    { path: '', redirectTo: '/registration', pathMatch: 'full' },
-    { path: 'registration', component: RegistrationComponent },
-    { path: 'login', component: LoginComponent }
-  ];
 
 @NgModule({
     imports: [
@@ -25,7 +21,7 @@ const routes: Routes = [
         FormsModule,
         CommonModule,
         ReactiveFormsModule,
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes, { enableTracing: true })
     ],
 
     providers: [PatientService,
