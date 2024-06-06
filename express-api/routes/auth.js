@@ -1,23 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 
+const connection = require('../db');
 const SECRET_KEY = process.env.SECRET_KEY;
 
 
-const connection = mysql.createConnection({
-    root: process.env.ROOT,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
-});
-
-connection.connect(err => {
-    if (err) throw err;
-    console.log("MYSQL connection established");
-});
 
 router.post('/login', (req, res) => {
     const {email, password} = req.body;
@@ -27,7 +17,7 @@ router.post('/login', (req, res) => {
         if (err) throw err;
         
         if(result.length == 0) {
-            return res.status(401).json({message: 'Authentication failed'});
+            return res.status(404).json({message: 'Patient not found'});
         };
 
         const user = result[0];
@@ -35,14 +25,12 @@ router.post('/login', (req, res) => {
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) throw err;
 
-            if(isMatch) {
-                const token = jwt.sign({id: user.id, email: user.email}, SECRET_KEY, {expiresIn: '2h'});
-                res.json({token});
+            if(!isMatch) {
+                return res.status(401).json({message: 'Incorrect email or password'});
             }
-
-            else{
-                res.status(401).json({message: 'Authentication failed'});
-            }
+            
+            const token = jwt.sign({id: user.id, email: user.email}, SECRET_KEY, {expiresIn: '2h'});
+            res.json({token, patientId: user.id});
         });
     });
 });

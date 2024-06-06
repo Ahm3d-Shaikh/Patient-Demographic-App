@@ -1,5 +1,6 @@
 {
   "routes": [
+    "/appointment-form",
     "/case-form",
     "/case-list",
     "/login",

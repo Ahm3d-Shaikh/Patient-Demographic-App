@@ -7,11 +7,12 @@ import { CaseFormComponent } from './case-form/case-form.component';
 import { CaseListComponent } from './case-list/case-list.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RegistrationComponent, LoginComponent, CaseFormComponent, CaseListComponent, CommonModule, RouterModule],
+  imports: [RouterOutlet, RegistrationComponent, LoginComponent, CaseFormComponent, CaseListComponent, AppointmentFormComponent, CommonModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

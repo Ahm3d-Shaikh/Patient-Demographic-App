@@ -12,6 +12,14 @@
                 <input type="password" id="password" formControlName = 'password' required>
             </div>
 
+            <div *ngIf="errorMessage" class="errorMessage">
+                <p class="text-danger text-center">
+                    {{ errorMessage }}
+                </p>
+            </div>
+
+            
+
             <div class="button-group">
                 <button type="submit" class="login-button">Login</button>
 

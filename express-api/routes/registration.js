@@ -1,31 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var mysql = require('mysql');
+const express = require('express');
+const router = express.Router();
+const mysql = require('mysql');
 require('dotenv').config();
+const bcrypt = require('bcrypt');
+const connection = require('../db')
 
-
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
-})
-
-connection.connect((err) => {
-    if (err) throw err;
-
-    console.log("MYSQL Connection Established");
-});
 
 
 router.post('/patients', (req, res) => {
-    console.log("Server p req ja rhi hai");
-    console.log(JSON.stringify(req.body));
     
     const firstName = req.body.firstName;
     const middleName = req.body.middleName;
     const lastName = req.body.lastName;
     const email = req.body.email;
+    const password = req.body.password;
     const gender = req.body.gender;
     const dob = req.body.dob;
     const homePhone = req.body.homePhone;
@@ -37,14 +25,22 @@ router.post('/patients', (req, res) => {
     const zip = req.body.zip;
     const ssn = req.body.ssn;
 
-    const query = `INSERT INTO Patients (firstName, middleName, lastName, email, gender, dob, homePhone, workPhone, cellPhone, address, city, state, zip, ssn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+        if (err) {
+            console.log("Error hashing password: ", err);
+            return res.status(500).json({message: 'Internal Server Error'});
+        };
+        
+        const query = `INSERT INTO Patients (firstName, middleName, lastName, email, password, gender, dob, homePhone, workPhone, cellPhone, address, city, state, zip, ssn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    
+        connection.query(query, [firstName, middleName, lastName, email, hashedPassword, gender, dob, homePhone, workPhone, cellPhone, address, city, state, zip, ssn], (err, result) => {
+            if (err) throw err;
+            console.log("Data added to the table");
+        })
+    
+        res.json({message: 'Patient Added Successfully'});
+    });
 
-    connection.query(query, [firstName, middleName, lastName, email, gender, dob, homePhone, workPhone, cellPhone, address, city, state, zip, ssn], (err, result) => {
-        if (err) throw err;
-        console.log("Data added to the table");
-    })
-
-    res.json({message: 'Patient Added Successfully'});
-})
+});
 
 module.exports = router;

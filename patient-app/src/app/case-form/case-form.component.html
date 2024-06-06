@@ -1,1 +1,143 @@
-<p>case-form works!</p>
+<div class="case-form-container">
+  <h2>Case Information</h2>
+  <form [formGroup]="caseForm" (ngSubmit)="onSubmit($event)">
+    <div class="form-group">
+      <label for="practiceLocation">Practice Location</label>
+      <input type="text" id="practiceLocation" formControlName="practiceLocation">
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category</label>
+      <input type="text" id="category" formControlName="category">
+    </div>
+
+    <div class="form-group">
+      <label for="purposeOfVisit">Purpose of Visit</label>
+      <input type="text" id="purposeOfVisit" formControlName="purposeOfVisit">
+    </div>
+
+    <div class="form-group">
+      <label for="caseType">Case Type</label>
+      <input type="text" id="caseType" formControlName="caseType">
+    </div>
+
+    <div class="form-group">
+      <label for="doa">DOA</label>
+      <input type="date" id="doa" formControlName="doa">
+    </div>
+
+    <fieldset>
+      <legend>Firm Information</legend>
+      <div class="form-group">
+        <label for="firmName">Firm Name</label>
+        <input type="text" id="firmName" formControlName="firmName">
+      </div>
+
+      <div class="form-group">
+        <label for="streetAddress">Street Address</label>
+        <input type="text" id="streetAddress" formControlName="streetAddress">
+      </div>
+
+      <div class="form-group">
+        <label for="firmCity">City</label>
+        <input type="text" id="firmCity" formControlName="firmCity">
+      </div>
+
+      <div class="form-group">
+        <label for="firmState">State</label>
+        <input type="text" id="firmState" formControlName="firmState">
+      </div>
+
+      <div class="form-group">
+        <label for="firmZip">Zip</label>
+        <input type="number" id="firmZip" formControlName="firmZip">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Attorney's Information</legend>
+      <div class="form-group">
+        <label for="attorneyName">Name</label>
+        <input type="text" id="attorneyName" formControlName="attorneyName">
+      </div>
+
+      <div class="form-group">
+        <label for="attorneyEmail">Email</label>
+        <input type="email" id="attorneyEmail" formControlName="attorneyEmail">
+      </div>
+
+      <div class="form-group">
+        <label for="attorneyPhone">Cell Phone</label>
+        <input type="number" id="attorneyPhone" formControlName="attorneyPhone">
+      </div>
+
+      <div class="form-group">
+        <label for="attorneyExtension">Extension</label>
+        <input type="number" id="attorneyExtension" formControlName="attorneyExtension">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Insurance Information</legend>
+      <div class="form-group">
+        <label for="insuranceName">Insurance Name</label>
+        <input type="text" id="insuranceName" formControlName="insuranceName">
+      </div>
+
+      <div class="form-group">
+        <label for="insuranceCode">Insurance Code</label>
+        <input type="number" id="insuranceCode" formControlName="insuranceCode">
+      </div>
+
+      <div class="form-group">
+        <label for="insuranceCity">City</label>
+        <input type="text" id="insuranceCity" formControlName="insuranceCity">
+      </div>
+
+      <div class="form-group">
+        <label for="insuranceState">State</label>
+        <input type="text" id="insuranceState" formControlName="insuranceState">
+      </div>
+
+      <div class="form-group">
+        <label for="insuranceZip">Zip</label>
+        <input type="number" id="insuranceZip" formControlName="insuranceZip">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Adjuster's Information</legend>
+      <div class="form-group">
+        <label for="adjusterName">Name</label>
+        <input type="text" id="adjusterName" formControlName="adjusterName">
+      </div>
+
+      <div class="form-group">
+        <label for="adjusterEmail">Email</label>
+        <input type="email" id="adjusterEmail" formControlName="adjusterEmail">
+      </div>
+
+      <div class="form-group">
+        <label for="adjusterPhone">Cell Phone</label>
+        <input type="number" id="adjusterPhone" formControlName="adjusterPhone">
+      </div>
+
+      <div class="form-group">
+        <label for="adjusterExtension">Extension</label>
+        <input type="number" id="adjusterExtension" formControlName="adjusterExtension">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Marketing</legend>
+      <div class="form-group">
+        <label for="accountManager">Account Manager</label>
+        <input type="text" id="accountManager" formControlName="accountManager">
+      </div>
+    </fieldset>
+
+    <div class="form-group">
+      <button type="submit">Save & Continue</button>
+    </div>
+  </form>
+</div>
