@@ -4,6 +4,7 @@ import { HtmlParser } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule, Router} from '@angular/router';
+import { response } from 'express';
 
 @Component({
   selector: 'app-case-form',
@@ -15,6 +16,14 @@ import { RouterModule, Router} from '@angular/router';
 export class CaseFormComponent implements OnInit {
 
   caseForm: FormGroup
+  practiceLocation : string[] = [];
+  purposeOfVisit : string[] = ['Routine Checkup', 'Emergency', 'Blood donation'];
+  category : string[] = ['A', 'B', 'C'];
+  caseType : string[] = ['Serious', 'Normal', 'Out of danger'];
+  firmName : string[] = [];
+  insuranceName : string[] = [];
+
+
   constructor(private fb:FormBuilder, private http:HttpClient, private router: Router) {
     this.caseForm = this.fb.group({
       practiceLocation : ['', Validators.required],
@@ -45,8 +54,41 @@ export class CaseFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    this.fetchDropDownData();
   };
+
+  fetchDropDownData() : void {
+    this.http.get<string[]>('/api/v1/practice-locations').subscribe({
+      next : (response) => {
+        this.practiceLocation = response
+      },
+      error: (err) => {
+        console.log("Error fetching practice locations ", err);
+      }
+    });
+
+
+    this.http.get<string[]>('/api/v1/firms').subscribe({
+      next : (response) => {
+        this.firmName = response;
+      },
+
+      error: (err) => {
+        console.log("Error fetching firm names ", err);
+      }
+    });
+
+
+    this.http.get<string[]>('/api/v1/insurances').subscribe({
+      next : (response) => {
+        this.insuranceName = response;
+      },
+
+      error: (err) => {
+        console.log("Error fetching insurances names ", err);
+      }
+    });
+  }
 
   onSubmit(event: Event) :void{
     event.preventDefault();

@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
+import { response } from 'express';
 
 @Component({
   selector: 'app-appointment-form',
@@ -15,7 +16,8 @@ export class AppointmentFormComponent implements OnInit {
   appointmentForm : FormGroup;
   practiceLocations : string[] = [];
   appointmentTypes : string[] = ['Type 1', 'Type 2', 'Type 3'];
-  doctors: string[] = ['Doctor 1', 'Doctor 2', 'Doctor 3'];
+  doctors: string[] = [];
+  speciality: string[] = [];
 
   constructor(private fb: FormBuilder, private http: HttpClient, private router: Router){
     this.appointmentForm = this.fb.group({
@@ -33,7 +35,33 @@ export class AppointmentFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchPracticeLocations();
+    this.fetchSpecialities();
+    this.fetchDoctors();
   }
+
+  fetchDoctors() : void {
+    this.http.get<string[]>('/api/v1/doctor').subscribe({
+      next: (response) => {
+        this.doctors = response;
+      },
+
+      error: (err) => {
+        console.log("Error while fetching doctors ", err);
+      }
+    });
+  }
+
+  fetchSpecialities() : void {
+    this.http.get<string[]>('/api/v1/speciality').subscribe({
+      next : (response) => {
+        this.speciality = response;
+      },
+
+      error: (err) => {
+        console.log("Error while fetching specialities ",err);
+      }
+    });
+  };
 
   fetchPracticeLocations() : void {
     this.http.get<string[]>('/api/v1/practice-locations').subscribe({

@@ -9,9 +9,9 @@ class FirmsSeeder extends Seeder {
     public function run()
     {
         DB::table('firms') -> insert([
-            ['name' => 'Firm A', 'city' => 'Lahore', 'state' => 'Punjab', 'zip' => '12345'],
-            ['name' => 'Firm B', 'city' => 'Faisalabad', 'state' => 'Punjab', 'zip' => '54960'],
-            ['name' => 'Firm C', 'city' => 'Islamabad', 'state' => 'Punjab', 'zip'=> '35782']
+            ['name' => 'HealthCare Legal Solutions', 'city' => 'Lahore', 'state' => 'Punjab', 'zip' => '12345'],
+            ['name' => 'Global Legal Advisors', 'city' => 'Faisalabad', 'state' => 'Punjab', 'zip' => '54960'],
+            ['name' => 'Health Tech', 'city' => 'Islamabad', 'state' => 'Punjab', 'zip'=> '35782']
         ]);
     }
 }

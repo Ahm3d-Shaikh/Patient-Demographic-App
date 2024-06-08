@@ -3,6 +3,7 @@
     "/appointment-form",
     "/case-form",
     "/case-list",
+    "/home",
     "/login",
     "/register"
   ]

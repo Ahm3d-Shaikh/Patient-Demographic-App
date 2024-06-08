@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('gender');
             $table->date('dob');
+            $table->string('role');
             $table->string('homePhone')->nullable();
             $table->string('workPhone')->nullable();
             $table->string('cellPhone');

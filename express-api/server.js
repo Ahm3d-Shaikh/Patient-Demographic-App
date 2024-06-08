@@ -4,16 +4,17 @@ const cors = require('cors');
 const path = require('path');
 
 
-var registration = require('./routes/registration');
-var auth = require('./routes/auth');
-var cases = require('./routes/cases');
-var appointments = require('./routes/appointments');
+const registration = require('./routes/registration');
+const auth = require('./routes/auth');
+const cases = require('./routes/cases');
+const appointments = require('./routes/appointments');
+const patients = require('./routes/patients');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/api/v1', registration, auth, cases, appointments);
+app.use('/api/v1', registration, auth, cases, appointments, patients);
 
 app.use(express.static(path.join(__dirname, '..', 'patient-app', 'dist', 'patient-app', 'browser')));
 

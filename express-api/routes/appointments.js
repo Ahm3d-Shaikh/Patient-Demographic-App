@@ -11,9 +11,50 @@ router.get('/practice-locations', (req, res) => {
     });
 });
 
+router.get('/speciality', (req, res) => {
+    const query = "SELECT speciality from doctors";
+
+    connection.query(query, (err, result) => {
+        if(err) {
+            console.log("Error while fetching specialities ", err);
+            res.sendStatus(500).json({message: 'Internal Server Error'});
+            return;
+        }
+
+        if(result.length === 0){
+            console.log("Speciality not found");
+            res.sendStatus(404).json({message : 'Doctor not Found'});
+            return;
+        }
+
+        console.log("Specialities ka result: ", result);
+
+        res.json(result.map(row => row.speciality));
+    });
+})
+
+router.get('/doctor', (req, res) => {
+    const query = "SELECT name from doctors";
+
+    connection.query(query, (err, result) => {
+        if(err) {
+            console.log("Error while fetching doctors ", err);
+            res.sendStatus(500).json({message: 'Internal Server Error'});
+            return;
+        }
+
+        if(result.length === 0){
+            console.log("Doctor not found");
+            res.sendStatus(404).json({message : 'Doctor not Found'});
+            return;
+        }
+
+        res.json(result.map(row => row.name));
+    });
+})
+
 
 router.post('/appointments', (req, res) => {
-    console.log(JSON.stringify(req.body));
     
     const {
         appointmentDate,

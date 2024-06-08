@@ -1,0 +1,20 @@
+.navbar {
+    margin-bottom: 20px;
+  }
+  
+  .navbar-brand {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    
+  }
+  .nav-link {
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .nav {
+    margin-right: 30px;
+  }
+  .nav-link:hover {
+    text-decoration:solid;
+  }
+  

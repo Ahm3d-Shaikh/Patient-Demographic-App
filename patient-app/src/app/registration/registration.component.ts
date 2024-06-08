@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 })
 export class RegistrationComponent implements OnInit {
   registrationForm: FormGroup;
+  roles:string[] = ['patient', 'doctor', 'admin']
 
   constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) {
     this.registrationForm = this.fb.group({
@@ -24,6 +25,7 @@ export class RegistrationComponent implements OnInit {
       password: ['', Validators.required],
       gender: ['', Validators.required],
       dob: ['', Validators.required],
+      role: ['', Validators.required],
       homePhone: [''],
       workPhone: [''],
       cellPhone: ['', Validators.required],

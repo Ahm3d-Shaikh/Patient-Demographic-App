@@ -15,6 +15,7 @@ import { response } from 'express';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string | null = null;
+  
 
   constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) {
     this.loginForm = this.fb.group({
@@ -35,7 +36,8 @@ export class LoginComponent implements OnInit {
         next: (response: any) => {
           localStorage.setItem('token',response.token);
           localStorage.setItem('patientId', response.patientId);
-          this.router.navigate(['/case-form']);
+          localStorage.setItem('role', response.role);
+          this.router.navigate(['/home']);
         },
 
         error: (err) => {

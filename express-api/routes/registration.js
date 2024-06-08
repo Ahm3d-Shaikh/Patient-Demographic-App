@@ -16,6 +16,7 @@ router.post('/patients', (req, res) => {
     const password = req.body.password;
     const gender = req.body.gender;
     const dob = req.body.dob;
+    const role = req.body.role;
     const homePhone = req.body.homePhone;
     const workPhone = req.body.workPhone;
     const cellPhone = req.body.cellPhone;
@@ -31,9 +32,9 @@ router.post('/patients', (req, res) => {
             return res.status(500).json({message: 'Internal Server Error'});
         };
         
-        const query = `INSERT INTO Patients (firstName, middleName, lastName, email, password, gender, dob, homePhone, workPhone, cellPhone, address, city, state, zip, ssn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const query = `INSERT INTO Patients (firstName, middleName, lastName, email, password, gender, dob,role, homePhone, workPhone, cellPhone, address, city, state, zip, ssn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     
-        connection.query(query, [firstName, middleName, lastName, email, hashedPassword, gender, dob, homePhone, workPhone, cellPhone, address, city, state, zip, ssn], (err, result) => {
+        connection.query(query, [firstName, middleName, lastName, email, hashedPassword, gender, dob, role, homePhone, workPhone, cellPhone, address, city, state, zip, ssn], (err, result) => {
             if (err) throw err;
             console.log("Data added to the table");
         })

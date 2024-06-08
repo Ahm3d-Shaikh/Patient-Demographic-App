@@ -30,7 +30,7 @@ router.post('/login', (req, res) => {
             }
             
             const token = jwt.sign({id: user.id, email: user.email}, SECRET_KEY, {expiresIn: '2h'});
-            res.json({token, patientId: user.id});
+            res.json({token, patientId: user.id, role: user.role});
         });
     });
 });

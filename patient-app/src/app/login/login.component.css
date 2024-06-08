@@ -62,6 +62,9 @@
     color: white;
   }
   
+  .signup-group {
+    margin-top: 5px;
+  }
   button:hover {
     opacity: 0.9;
   }

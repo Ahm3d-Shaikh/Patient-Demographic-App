@@ -1,1 +1,14 @@
-<p>case-list works!</p>
+<div class="case-list">
+    <h2>Case List</h2>
+    <div class="card-container">
+      <div *ngFor="let caseItem of cases" class="card" (click)="viewCase(caseItem.id)">
+        <div class="card-body">
+          <h5 class="card-title">Case ID: {{ caseItem.id }}</h5>
+          <p class="card-text">Category: {{ caseItem.category }}</p>
+          <p class="card-text">Purpose of Visit: {{ caseItem.purpose_of_visit }}</p>
+          <button class="btn btn-primary">View Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
