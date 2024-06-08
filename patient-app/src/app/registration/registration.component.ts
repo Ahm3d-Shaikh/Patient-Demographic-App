@@ -26,6 +26,7 @@ export class RegistrationComponent implements OnInit {
       gender: ['', Validators.required],
       dob: ['', Validators.required],
       role: ['', Validators.required],
+      speciality: [''],
       homePhone: [''],
       workPhone: [''],
       cellPhone: ['', Validators.required],

@@ -88,7 +88,11 @@ export class CaseFormComponent implements OnInit {
         console.log("Error fetching insurances names ", err);
       }
     });
+
+    
   }
+
+  
 
   onSubmit(event: Event) :void{
     event.preventDefault();

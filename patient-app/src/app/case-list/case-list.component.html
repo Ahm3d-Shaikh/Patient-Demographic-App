@@ -6,7 +6,8 @@
           <h5 class="card-title">Case ID: {{ caseItem.id }}</h5>
           <p class="card-text">Category: {{ caseItem.category }}</p>
           <p class="card-text">Purpose of Visit: {{ caseItem.purpose_of_visit }}</p>
-          <button class="btn btn-primary">View Details</button>
+          <button id="deleteButton" *ngIf="isAdmin()" class="btn btn-danger" (click)="deleteCase(caseItem.id)">Delete</button>
+          <button id="viewButton" class="btn btn-primary">View Details</button>
         </div>
       </div>
     </div>

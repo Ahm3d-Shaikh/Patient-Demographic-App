@@ -12,12 +12,12 @@ const SECRET_KEY = process.env.SECRET_KEY;
 router.post('/login', (req, res) => {
     const {email, password} = req.body;
 
-    const query = `SELECT * from Patients WHERE email = ?`;
+    const query = `SELECT * from users WHERE email = ?`;
     connection.query(query, [email], (err, result) => {
         if (err) throw err;
         
         if(result.length == 0) {
-            return res.status(404).json({message: 'Patient not found'});
+            return res.status(404).json({message: 'User not found'});
         };
 
         const user = result[0];

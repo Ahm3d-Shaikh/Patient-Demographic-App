@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('doctors', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('name');
-            $table->string('speciality');
-            $table->integer('years_of_experience');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->string('speciality')->after('role')->default('users');
         });
     }
 
@@ -25,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('doctors');
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->dropColumn('speciality');
+        });
     }
 };

@@ -37,7 +37,18 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token',response.token);
           localStorage.setItem('patientId', response.patientId);
           localStorage.setItem('role', response.role);
-          this.router.navigate(['/home']);
+          
+          const role = response.role;
+
+          if(role == 'Admin'){
+            this.router.navigate(['/admin'])
+          }
+          else if(role == 'Doctor'){
+            this.router.navigate(['/doctor']);
+          }
+          else{
+            this.router.navigate(['/home'])
+          }
         },
 
         error: (err) => {

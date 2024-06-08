@@ -11,30 +11,13 @@ router.get('/practice-locations', (req, res) => {
     });
 });
 
-router.get('/speciality', (req, res) => {
-    const query = "SELECT speciality from doctors";
-
-    connection.query(query, (err, result) => {
-        if(err) {
-            console.log("Error while fetching specialities ", err);
-            res.sendStatus(500).json({message: 'Internal Server Error'});
-            return;
-        }
-
-        if(result.length === 0){
-            console.log("Speciality not found");
-            res.sendStatus(404).json({message : 'Doctor not Found'});
-            return;
-        }
-
-        console.log("Specialities ka result: ", result);
-
-        res.json(result.map(row => row.speciality));
-    });
-})
 
 router.get('/doctor', (req, res) => {
-    const query = "SELECT name from doctors";
+    const query = `
+        SELECT CONCAT(firstName, ' ', lastName) as name 
+        FROM users 
+        WHERE role = 'Doctor'
+    `;
 
     connection.query(query, (err, result) => {
         if(err) {
@@ -61,7 +44,6 @@ router.post('/appointments', (req, res) => {
         appointmentTime,
         practiceLocation,
         appointmentType,
-        speciality,
         doctor,
         duration,
         comments,
@@ -103,13 +85,12 @@ router.post('/appointments', (req, res) => {
                         const caseId = caseResults[0].id;
                         
             // Insert appointment
-            const insertAppointmentQuery = "INSERT INTO appointments (case_id, appointment_date, appointment_time, appointment_type, speciality, doctor, practice_location, duration, practice_location_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            const insertAppointmentQuery = "INSERT INTO appointments (case_id, appointment_date, appointment_time, appointment_type, doctor, practice_location, duration, practice_location_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             connection.query(insertAppointmentQuery, [
                 caseId,
                 appointmentDate,
                 appointmentTime,
                 appointmentType,
-                speciality,
                 doctor,
                 practiceLocation,
                 duration,

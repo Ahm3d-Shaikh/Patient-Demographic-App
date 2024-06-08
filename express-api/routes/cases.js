@@ -2,6 +2,29 @@ const express = require('express');
 const router = express.Router();
 const connection = require('../db');
 
+const authenticate = (req, res, next) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).send('Unauthorized');
+  
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+      if (err) return res.status(401).send('Unauthorized');
+      req.user = decoded;
+      next();
+    });
+  };
+  
+  // Middleware to check roles
+  const authorize = (roles) => {
+    return (req, res, next) => {
+      const role = req.headers['role'];
+      if (!roles.includes(role)) {
+        return res.status(403).send('Forbidden');
+      }
+      next();
+    };
+  };
+
+
 router.post('/cases', (req, res) => {
 
     const practiceLocation = req.body.practiceLocation;
@@ -89,22 +112,44 @@ router.post('/cases', (req, res) => {
 
 
 router.get('/cases', (req, res) => {
-    const patientId = req.query.patientId;
-    const query = "SELECT * FROM cases WHERE patient_id = ?";
 
-    connection.query(query, [patientId], (err, result) => {
+    const role = req.headers['role'];
+    const id = req.headers['patientid'];
+
+
+    if(role === 'Admin') {
+        query = 'SELECT * FROM cases';
+    }
+
+    else if(role === 'Doctor') {
+        query = `
+        SELECT c.*, u.*
+        FROM cases c
+        JOIN appointments a ON c.id = a.case_id
+        JOIN users u ON c.patient_id = u.id;`
+    }
+
+    else if(role === 'Patient'){
+        query = 'SELECT * from cases WHERE patient_id = ?';
+    }
+    else{
+        return res.sendStatus(403).json({message: 'Forbidden'});
+    }
+
+    connection.query(query, [id], (err, result) => {
         if (err) {
-            console.log("Error Fetching Cases ", err);
-            res.status(500).json({message: 'Internal Server Error'});
+            console.log("Error fetching cases ", err);
+            res.sendStatus(500).json({message: 'Internal Server Error'});
             return;
         }
+        
         res.json(result);
-    });
+    })
 });
 
 router.get('/cases/:id', (req, res) => {
     const caseId = req.params.id;
-    const query = `SELECT c.id as case_id, c.category, c.purpose_of_visit, c.case_type, c.doa, c.practice_location, a.speciality, a.appointment_date as appointment_date, a.doctor as doctor, i.name as insuranceName, f.name as firmName FROM cases c LEFT JOIN appointments a ON c.id = a.case_id LEFT JOIN insurances i ON c.insurance_id = i.id LEFT JOIN firms f ON c.firm_id = f.id WHERE c.id = ?`;
+    const query = `SELECT c.id as case_id, c.category, c.purpose_of_visit, c.case_type, c.doa, c.practice_location, a.appointment_date as appointment_date, a.doctor as doctor, i.name as insuranceName, f.name as firmName FROM cases c LEFT JOIN appointments a ON c.id = a.case_id LEFT JOIN insurances i ON c.insurance_id = i.id LEFT JOIN firms f ON c.firm_id = f.id WHERE c.id = ?`;
 
     connection.query(query, [caseId], (err, result) => {
         if (err) {
@@ -119,6 +164,7 @@ router.get('/cases/:id', (req, res) => {
         res.json(result[0]);
     });
 });
+
 
 
 
@@ -145,6 +191,54 @@ router.get('/insurances', (req, res) => {
         res.json(results.map(row => row.name));
     });
 });
+
+router.delete('/cases/:id', (req, res) => {
+    const id = req.params.id;
+    const deleteAppointmentsQuery = `DELETE FROM appointments WHERE case_id = ?`;
+    const deleteCaseQuery = `DELETE FROM cases WHERE id = ?`;
+
+    // Start a transaction to ensure atomicity
+    connection.beginTransaction((err) => {
+        if (err) {
+            console.log("Error starting transaction: ", err);
+            res.sendStatus(500).json({ message: 'Internal Server Error' });
+            return;
+        }
+
+        connection.query(deleteAppointmentsQuery, [id], (err, result) => {
+            if (err) {
+                connection.rollback(() => {
+                    console.log("Error while deleting appointments: ", err);
+                    res.sendStatus(500).json({ message: 'Internal Server Error' });
+                });
+                return;
+            }
+
+            connection.query(deleteCaseQuery, [id], (err, result) => {
+                if (err) {
+                    connection.rollback(() => {
+                        console.log("Error while deleting case: ", err);
+                        res.sendStatus(500).json({ message: 'Internal Server Error' });
+                    });
+                    return;
+                }
+
+                connection.commit((err) => {
+                    if (err) {
+                        connection.rollback(() => {
+                            console.log("Error committing transaction: ", err);
+                            res.sendStatus(500).json({ message: 'Internal Server Error' });
+                        });
+                        return;
+                    }
+
+                    res.sendStatus(200).json({ message: 'Case and appointments deleted successfully' });
+                });
+            });
+        });
+    });
+})
+
 
 
 

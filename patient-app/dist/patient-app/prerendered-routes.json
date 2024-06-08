@@ -1,8 +1,10 @@
 {
   "routes": [
+    "/admin",
     "/appointment-form",
     "/case-form",
     "/case-list",
+    "/doctor",
     "/home",
     "/login",
     "/register"

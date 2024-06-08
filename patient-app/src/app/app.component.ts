@@ -9,11 +9,12 @@ import { RouterModule, Router } from '@angular/router';
 import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 import { CaseDetailComponent } from './case-detail/case-detail.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RegistrationComponent, LoginComponent, CaseFormComponent, CaseListComponent, AppointmentFormComponent, CaseDetailComponent, CommonModule, RouterModule,NavbarComponent],
+  imports: [RouterOutlet, RegistrationComponent, LoginComponent, CaseFormComponent, CaseListComponent, AppointmentFormComponent, CaseDetailComponent, CommonModule, RouterModule,NavbarComponent, AdminPageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
