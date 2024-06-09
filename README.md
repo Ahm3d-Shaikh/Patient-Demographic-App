@@ -5,7 +5,7 @@ This project is a full stack patient-demographic application based on Laravel, A
 ## PreRequisites ##
 1- node.js and npm installed  
 2- angular CLI installed  
-3- MYSQL server running
+3- MYSQL server running  
 4- Composer and PHP running.
 
 ## Setup Instructions ##
