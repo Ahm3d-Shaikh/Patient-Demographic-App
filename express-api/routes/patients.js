@@ -43,6 +43,8 @@ router.get('/doctor/:id', (req, res) => {
 
         res.json(result[0]);
     });
+
+
 });
 
 

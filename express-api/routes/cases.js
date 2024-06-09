@@ -114,37 +114,103 @@ router.post('/cases', (req, res) => {
 router.get('/cases', (req, res) => {
 
     const role = req.headers['role'];
-    const id = req.headers['patientid'];
+    const patientId = req.headers['patientid'];
+    const filters = req.query;
 
 
-    if(role === 'Admin') {
-        query = 'SELECT * FROM cases';
+    let query = 'SELECT c.*, u.firstName, u.lastName, u.dob, u.speciality, a.appointment_date, a.appointment_time, a.doctor, a.practice_location, i.name as insuranceName, f.name as firmName ';
+    query += 'FROM cases c ';
+    query += 'LEFT JOIN users u ON c.patient_id = u.id ';
+    query += 'LEFT JOIN appointments a ON c.id = a.case_id ';
+    query += 'LEFT JOIN insurances i ON c.insurance_id = i.id ';
+    query += 'LEFT JOIN firms f ON c.firm_id = f.id ';
+
+    let conditions = [];
+    let values = [];
+
+    if (role === 'Patient') {
+        conditions.push('c.patient_id = ?');
+        values.push(patientId);
+    } else if (role === 'Doctor') {
+        conditions.push('a.doctor = (SELECT CONCAT(firstName, " ", lastName) FROM users WHERE id = ?)');
+        values.push(patientId);
     }
 
-    else if(role === 'Doctor') {
-        query = `
-        SELECT c.*, u.*
-        FROM cases c
-        JOIN appointments a ON c.id = a.case_id
-        JOIN users u ON c.patient_id = u.id;`
+    if (filters.patientId) {
+        conditions.push('c.patient_id = ?');
+        values.push(filters.patientId);
+    }
+    if (filters.firstName) {
+        conditions.push('u.firstName LIKE ?');
+        values.push('%' + filters.firstName + '%');
+    }
+    if (filters.lastName) {
+        conditions.push('u.lastName LIKE ?');
+        values.push('%' + filters.lastName + '%');
+    }
+    if (filters.caseId) {
+        conditions.push('c.id = ?');
+        values.push(filters.caseId);
+    }
+    if (filters.category) {
+        conditions.push('c.category = ?');
+        values.push(filters.category);
+    }
+    if (filters.purposeOfVisit) {
+        conditions.push('c.purpose_of_visit = ?');
+        values.push(filters.purposeOfVisit);
+    }
+    if (filters.caseType) {
+        conditions.push('c.case_type = ?');
+        values.push(filters.caseType);
+    }
+    if (filters.dob) {
+        conditions.push('u.dob = ?');
+        values.push(filters.dob);
+    }
+    if (filters.practiceLocation) {
+        conditions.push('a.practice_location = ?');
+        values.push(filters.practiceLocation);
+    }
+    if (filters.insuranceName) {
+        conditions.push('i.name = ?');
+        values.push(filters.insuranceName);
+    }
+    if (filters.firmName) {
+        conditions.push('f.name = ?');
+        values.push(filters.firmName);
+    }
+    if (filters.doa) {
+        conditions.push('c.doa = ?');
+        values.push(filters.doa);
+    }
+    if (filters.speciality) {
+        conditions.push('u.speciality = ?');
+        values.push(filters.speciality);
+    }
+    if (filters.appointmentDate) {
+        conditions.push('a.appointment_date = ?');
+        values.push(filters.appointmentDate);
+    }
+    if (filters.doctor) {
+        conditions.push('a.doctor = ?');
+        values.push(filters.doctor);
     }
 
-    else if(role === 'Patient'){
-        query = 'SELECT * from cases WHERE patient_id = ?';
-    }
-    else{
-        return res.sendStatus(403).json({message: 'Forbidden'});
+    if (conditions.length > 0) {
+        query += 'WHERE ' + conditions.join(' AND ');
     }
 
-    connection.query(query, [id], (err, result) => {
+    connection.query(query, values, (err, result) => {
         if (err) {
             console.log("Error fetching cases ", err);
-            res.sendStatus(500).json({message: 'Internal Server Error'});
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
         }
-        
+
         res.json(result);
-    })
+    });
+    
 });
 
 router.get('/cases/:id', (req, res) => {
@@ -189,6 +255,39 @@ router.get('/insurances', (req, res) => {
             return;
         }
         res.json(results.map(row => row.name));
+    });
+});
+
+
+router.get('/specialities', (req, res) => {
+    const query = `SELECT speciality from users`;
+
+    connection.query(query, (err, result) => {
+        if (err) {
+            console.log("Error fetching specialities ", err);
+            res.status(500).json({message: 'Internal Server Error'});
+            return;
+        }
+
+        res.json(result.map(row => row.speciality));
+    });
+});
+
+router.get('/doctor-name', (req, res) => {
+
+    const query = `SELECT firstName, lastName from users WHERE role = 'Doctor'`;
+
+    connection.query(query, (err, result) => {
+        if(err) {
+            console.log("Error fetching doctors from database ", err);
+            res.sendStatus(500).json({message: 'Internal Server Error'});
+        }
+
+        if(result.length === 0) {
+            res.sendStatus(401).json({message: 'Doctor not found'});
+        }
+
+        res.json(result.map(row => (row.firstName + " " + row.lastName)));
     });
 });
 

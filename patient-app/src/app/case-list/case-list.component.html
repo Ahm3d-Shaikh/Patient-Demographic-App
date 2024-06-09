@@ -1,15 +1,116 @@
 <div class="case-list">
+  <div class="header">
     <h2>Case List</h2>
-    <div class="card-container">
-      <div *ngFor="let caseItem of cases" class="card" (click)="viewCase(caseItem.id)">
-        <div class="card-body">
-          <h5 class="card-title">Case ID: {{ caseItem.id }}</h5>
-          <p class="card-text">Category: {{ caseItem.category }}</p>
-          <p class="card-text">Purpose of Visit: {{ caseItem.purpose_of_visit }}</p>
-          <button id="deleteButton" *ngIf="isAdmin()" class="btn btn-danger" (click)="deleteCase(caseItem.id)">Delete</button>
-          <button id="viewButton" class="btn btn-primary">View Details</button>
-        </div>
+    <button class="btn btn-primary float-right" (click)="openFilterModal()">Apply Filters</button>
+  </div>
+
+  <div *ngIf="isFiltered" class="filter-message">
+    Showing results according to the filters
+  </div>
+
+  <div class="card-container">
+    <div *ngFor="let caseItem of cases" class="card" (click)="viewCase(caseItem.id)">
+      <div class="card-body">
+        <h5 class="card-title">Case ID: {{ caseItem.id }}</h5>
+        <p class="card-text">Category: {{ caseItem.category }}</p>
+        <p class="card-text">Purpose of Visit: {{ caseItem.purpose_of_visit }}</p>
+        <button id="deleteButton" *ngIf="isAdmin()" class="btn btn-danger" (click)="deleteCase(caseItem.id)">Delete</button>
+        <button id="viewButton" class="btn btn-primary">View Details</button>
       </div>
     </div>
   </div>
-  
+
+  <!-- Filter Modal -->
+  <div *ngIf="showFilterModal" class="filter-modal">
+    <div class="filter-modal-content">
+      <span class="close" (click)="closeFilterModal()">&times;</span>
+      <h3>Apply Filters</h3>
+      <form (ngSubmit)="applyFilters()">
+        <div class="form-group">
+          <label for="patientId">Patient ID</label>
+          <input type="text" id="patientId" [(ngModel)]="filters.patientId" name="patientId" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="patientName">Patient Name</label>
+          <input type="text" id="patientName" [(ngModel)]="filters.patientName" name="patientName" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="caseId">Case ID</label>
+          <input type="text" id="caseId" [(ngModel)]="filters.caseId" name="caseId" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" [(ngModel)]="filters.category" name="category" class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="purposeOfVisit">Purpose of Visit</label>
+          <select id="purposeOfVisit" [(ngModel)]="filters.purposeOfVisit" name="purposeOfVisit" class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let purpose of purposesOfVisit" [value]="purpose">{{purpose}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="caseType">Case Type</label>
+          <select id="caseType" [(ngModel)]="filters.caseType" name="caseType" class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let type of caseTypes" [value]="type">{{type}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" [(ngModel)]="filters.dob" name="dob" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="practiceLocation">Practice Location</label>
+          <select id="practiceLocation" [(ngModel)]="filters.practiceLocation" name="practiceLocation" class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let location of practiceLocations" [value]="location">{{location}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="insuranceName">Insurance Name</label>
+          <select id="insuranceName" [(ngModel)]="filters.insuranceName" name="insuranceName" class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let insurance of insuranceNames" [value]="insurance">{{insurance}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="firmName">Firm Name</label>
+          <select id="firmName" [(ngModel)]="filters.firmName" name="firmName" class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let firm of firmNames" [value]="firm">{{firm}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="doa">DOA</label>
+          <input type="date" id="doa" [(ngModel)]="filters.doa" name="doa" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="speciality">Speciality</label>
+          <select id="speciality" [(ngModel)]="filters.speciality" name="speciality" class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let speciality of specialities" [value]="speciality">{{speciality}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="appointmentDate">Appointment Date</label>
+          <input type="date" id="appointmentDate" [(ngModel)]="filters.appointmentDate" name="appointmentDate" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="doctor">Doctor Name</label>
+          <select id="doctor" [(ngModel)]="filters.doctor" name="doctor" class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let doctor of doctors" [value]="doctor">{{doctor}}</option>
+          </select>
+        </div>
+        <div class="form-group text-right">
+          <button type="button" class="btn btn-secondary" id="cancelButton" (click)="closeFilterModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Apply Filters</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
